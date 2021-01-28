@@ -38,8 +38,6 @@ func NetListen() net.Listener {
 	return listener
 }
 
-
-
 // AddBlock : adds new block to blockchain
 func (s *Server) AddBlock(ctx context.Context, in *proto.AddBlockRequest) (*proto.AddBlockResponse, error) {
 	block := s.Blockchain.AddBlock(in.Data)

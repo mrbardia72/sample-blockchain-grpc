@@ -48,19 +48,19 @@ func MasterFlag() (*bool, *bool) {
 }
 
 func addBlock() {
-	block, addErr := client.AddBlock(context.Background(), &proto.AddBlockRequest{
+	block, err := client.AddBlock(context.Background(), &proto.AddBlockRequest{
 		Data: time.Now().String(),
 	})
-	if addErr != nil {
-		log.Fatalf("unable to add block: %v", addErr)
+	if err != nil {
+		log.Fatalf("unable to add block: %v", err)
 	}
 	log.Printf("new block hash: %s\n", block.Hash)
 }
 
 func getBlockchain() {
-	blockchain, getErr := client.GetBlockchain(context.Background(), &proto.GetBlockchainRequest{})
-	if getErr != nil {
-		log.Fatalf("unable to get blockchain: %v", getErr)
+	blockchain, err := client.GetBlockchain(context.Background(), &proto.GetBlockchainRequest{})
+	if err != nil {
+		log.Fatalf("unable to get blockchain: %v", err)
 	}
 
 	log.Println("blocks:")

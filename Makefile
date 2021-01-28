@@ -18,8 +18,8 @@ server: ## 🌱 run application 💙
 
 .PHONY: list
 list: ## 🌱 view list all block 💙
-	go run  client/main.go
+	go run  client/main.go --list
 
 .PHONY: add
 add: ## 🌱 create block in blockchian 💙
-	go run  client/main.go
+	go run  client/main.go --add
