@@ -4,11 +4,21 @@ import (
 	"log"
 	"net"
 
-	"../blockchain"
-	"../proto"
+	"github.com/mrbardia72/sample-blockchain-grpc/blockchain"
+	"github.com/mrbardia72/sample-blockchain-grpc/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
+
+// Server implements proto.BlockchainServer interface
+type Server struct {
+	Blockchain *blockchain.Blockchain
+}
+// Server API for Blockchain service
+//type BlockchainServer interface {
+//	AddBlock(context.Context, *AddBlockRequest) (*AddBlockResponse, error)
+//	GetBlockchain(context.Context, *GetBlockchainRequest) (*GetBlockchainResponse, error)
+//}
 
 func main() {
 	listener := NetListen()
@@ -28,16 +38,6 @@ func NetListen() net.Listener {
 	return listener
 }
 
-// Server implements proto.BlockchainServer interface
-type Server struct {
-	Blockchain *blockchain.Blockchain
-}
-
-// Server API for Blockchain service
-//type BlockchainServer interface {
-//	AddBlock(context.Context, *AddBlockRequest) (*AddBlockResponse, error)
-//	GetBlockchain(context.Context, *GetBlockchainRequest) (*GetBlockchainResponse, error)
-//}
 
 
 // AddBlock : adds new block to blockchain
