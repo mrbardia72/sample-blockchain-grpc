@@ -12,7 +12,6 @@ cm: ## 🌱 git commit 💙
 	git commit -m "🌱sample-blockchain-grpc💙-${LOGFILE}"
 	git push -u origin main
 
-
 .PHONY: server
 server: ## 🌱 run application 💙
 	go run  server/main.go
