@@ -1,24 +1,22 @@
 package main
 
 import (
+	"fmt"
+	"github.com/mrbardia72/sample-blockchain-grpc/blockchain"
+	"github.com/mrbardia72/sample-blockchain-grpc/config"
 	"log"
 	"net"
 
-	"github.com/mrbardia72/sample-blockchain-grpc/blockchain"
 	"github.com/mrbardia72/sample-blockchain-grpc/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
-// Server implements proto.BlockchainServer interface
+var blockchainCollection = config.DbConfig().Database("blockchain").Collection("block")
+
 type Server struct {
 	Blockchain *blockchain.Blockchain
 }
-// Server API for Blockchain service
-//type BlockchainServer interface {
-//	AddBlock(context.Context, *AddBlockRequest) (*AddBlockResponse, error)
-//	GetBlockchain(context.Context, *GetBlockchainRequest) (*GetBlockchainResponse, error)
-//}
 
 func main() {
 	listener := NetListen()
@@ -40,14 +38,27 @@ func NetListen() net.Listener {
 
 // AddBlock : adds new block to blockchain
 func (s *Server) AddBlock(ctx context.Context, in *proto.AddBlockRequest) (*proto.AddBlockResponse, error) {
+	fmt.Println("AddBlock")
+	//var model blockchain.Block
 	block := s.Blockchain.AddBlock(in.Data)
+
+	insertResult, err := blockchainCollection.InsertOne(ctx, block)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Inserted a single document: ", insertResult)
+
 	return &proto.AddBlockResponse{
+		//Hash: block.Hash,
 		Hash: block.Hash,
 	}, nil
+
+
 }
 
 // GetBlockchain : returns blockchain
 func (s *Server) GetBlockchain(ctx context.Context, in *proto.GetBlockchainRequest) (*proto.GetBlockchainResponse, error) {
+	fmt.Println("GetBlockchain")
 	resp := new(proto.GetBlockchainResponse)
 	for _, b := range s.Blockchain.Blocks {
 		resp.Blocks = append(resp.Blocks, &proto.Block{
